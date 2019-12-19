@@ -20,8 +20,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: 'v$NEXT_PATCH_VERSION'
-        release_name: Release 'v$NEXT_PATCH_VERSION'
+        tag_name: "v$NEXT_PATCH_VERSION"
+        release_name: Release "v$NEXT_PATCH_VERSION"
         draft: false
         prerelease: false
     - name: Upload Release Asset
@@ -34,15 +34,15 @@ jobs:
         asset_path: ./moss-db.zip
         asset_name: moss-db.zip
         asset_content_type: application/zip
-    - name: Push changes to repo
-      run: |
-        REMOTE=https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git config user.email "${{ github.actor }}@users.noreply.github.com"
-        git config user.name "${{ github.actor }}"
+#     - name: Push changes to repo
+#       run: |
+#         REMOTE=https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+#         git config user.email "${{ github.actor }}@users.noreply.github.com"
+#         git config user.name "${{ github.actor }}"
 
-        git pull ${REMOTE}
-        git checkout master
-        git add .
-        git status
-        git commit -am "Add new comment"
-        git push ${REMOTE} master
+#         git pull ${REMOTE}
+#         git checkout master
+#         git add .
+#         git status
+#         git commit -am "Add new comment"
+#         git push ${REMOTE} master
