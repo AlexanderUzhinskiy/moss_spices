@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Generate dataset archive
-      run: zip -r moss-db.zip ./dataset
+      run: zip -r -j moss-db.zip ./dataset/*
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
