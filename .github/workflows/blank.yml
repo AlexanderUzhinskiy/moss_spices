@@ -1,0 +1,18 @@
+name: ArchivingImageDB
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Generate dataset archive
+      run: |
+        zip -r moss-db.zip ./dataset
+        echo "Release"
