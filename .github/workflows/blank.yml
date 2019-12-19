@@ -13,6 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Generate dataset archive
-      run: |
-        zip -r moss-db.zip ./dataset
-        echo "Release"
+      run: zip -r moss-db.zip ./dataset
+    - name: Make Release
+      run: echo "Release"
