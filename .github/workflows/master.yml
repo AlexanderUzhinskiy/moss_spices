@@ -1,0 +1,49 @@
+name: ArchivingImageDB
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Generate dataset archive
+      run: cd dataset ; zip -r ../moss-db.zip . * ; cd ..
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./moss-db.zip
+        asset_name: moss-db.zip
+        asset_content_type: application/zip
+#     - name: Push changes to repo
+#       run: |
+#         REMOTE=https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+#         git config user.email "${{ github.actor }}@users.noreply.github.com"
+#         git config user.name "${{ github.actor }}"
+
+#         git pull ${REMOTE}
+#         git checkout master
+#         git add .
+#         git status
+#         git commit -am "Add new comment"
+#         git push ${REMOTE} master
